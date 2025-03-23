@@ -1,6 +1,6 @@
 ﻿namespace HillClimbing
 {
-    internal class Program
+    internal class FunctionOptimumFinder
     {
         static readonly double MAX = 10.0;
         static readonly double MIN = 0.0;
