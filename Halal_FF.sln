@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HillClimbing", "HillClimbin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSwarmOptimization", "ParticleSwarmOptimization\ParticleSwarmOptimization.csproj", "{FEBF797E-7F30-4F85-8B92-EE470C86A7E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSGA", "NSGA\NSGA.csproj", "{676938AC-9EB1-4B8F-8A89-7B60A1884C2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{FEBF797E-7F30-4F85-8B92-EE470C86A7E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEBF797E-7F30-4F85-8B92-EE470C86A7E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEBF797E-7F30-4F85-8B92-EE470C86A7E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{676938AC-9EB1-4B8F-8A89-7B60A1884C2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{676938AC-9EB1-4B8F-8A89-7B60A1884C2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{676938AC-9EB1-4B8F-8A89-7B60A1884C2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{676938AC-9EB1-4B8F-8A89-7B60A1884C2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
