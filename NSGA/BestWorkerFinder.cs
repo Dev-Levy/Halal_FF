@@ -1,4 +1,6 @@
-﻿namespace NSGA
+﻿using System;
+
+namespace NSGA
 {
     internal class BestWorkerFinder
     {

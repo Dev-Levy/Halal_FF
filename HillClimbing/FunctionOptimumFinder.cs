@@ -1,4 +1,6 @@
-﻿namespace HillClimbing
+﻿using System;
+
+namespace HillClimbing
 {
     internal class FunctionOptimumFinder
     {
