@@ -1,6 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace DBSCAN
@@ -9,10 +9,20 @@ namespace DBSCAN
     {
         static void Main()
         {
+            string logfile = "MouseClicks.txt";
+            int[][] clicks = File.ReadAllLines(logfile).Select(line => new int[] { int.Parse(line.Split(';')[0]), int.Parse(line.Split(';')[1]) }).ToArray();
+            int minPts = 3;
+            double eps = 1.0;
+            List<HashSet<int[]>> clusters = DBSCAN(clicks, minPts, eps);
 
+            foreach (var cluster in clusters)
+            {
+                Console.Write(cluster.Average(point => point[0]));
+                Console.WriteLine(cluster.Average(point => point[1]));
+            }
         }
 
-        public List<HashSet<int[]>> DBSCAN(int[][] clicks, int minPts, double eps)
+        public static List<HashSet<int[]>> DBSCAN(int[][] clicks, int minPts, double eps)
         {
             List<HashSet<int[]>> clusters = [];
             HashSet<int[]> Processed = [];
