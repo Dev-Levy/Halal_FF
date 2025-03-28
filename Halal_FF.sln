@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSGA", "NSGA\NSGA.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBSCAN", "DBSCAN\DBSCAN.csproj", "{DD09EB5A-20A5-43C3-9D53-0D2EC8834C24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseClickLogger", "MouseClickLogger\MouseClickLogger.csproj", "{AC585C5B-04AB-46A9-990D-69FA1BB6B75D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DD09EB5A-20A5-43C3-9D53-0D2EC8834C24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD09EB5A-20A5-43C3-9D53-0D2EC8834C24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD09EB5A-20A5-43C3-9D53-0D2EC8834C24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC585C5B-04AB-46A9-990D-69FA1BB6B75D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC585C5B-04AB-46A9-990D-69FA1BB6B75D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC585C5B-04AB-46A9-990D-69FA1BB6B75D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC585C5B-04AB-46A9-990D-69FA1BB6B75D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
