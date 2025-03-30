@@ -1,15 +1,17 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ParticleSwarmOptimization
 {
     internal class WareHousePlaceFinder
     {
-        static readonly int POPULATION_SIZE = 5;
+        static readonly int POPULATION_SIZE = 10;
+        static readonly int NUM_OF_BUILDINGS = 10;
         static readonly double INERTIA_WEIGHT = 0.7;
-        static readonly double ÖNFEJŰSÉG_WEIGHT = 0.7;
-        static readonly double KONVERGÁLÁS_WEIGHT = 0.5;
+        static readonly double ÖNFEJŰSÉG_WEIGHT = 0.1;
+        static readonly double KONVERGÁLÁS_WEIGHT = 0.1;
         static List<double[]> STORES = [];
         static List<double[]> RESIDENTIALS = [];
 
@@ -18,17 +20,16 @@ namespace ParticleSwarmOptimization
             //problem: where to put warehouse
             //away from residentals, close to stores
 
-            int numOfBuildings = 2;
-            STORES = SetCoordinates(numOfBuildings);
-            RESIDENTIALS = SetCoordinates(numOfBuildings);
+            STORES = SetCoordinates();
+            RESIDENTIALS = SetCoordinates();
 
             ParticeSwarmOptimization(() => false);
         }
 
-        private static List<double[]> SetCoordinates(int numOfBuildings)
+        private static List<double[]> SetCoordinates()
         {
             List<double[]> doubles = [];
-            for (int i = 0; i < numOfBuildings; i++)
+            for (int i = 0; i < NUM_OF_BUILDINGS; i++)
             {
                 doubles.Add([Random.Shared.NextDouble(), Random.Shared.NextDouble()]);
             }
@@ -69,6 +70,8 @@ namespace ParticleSwarmOptimization
             while (!STOPCONDITION.Invoke())
             {
                 DrawMap(P);
+                //Console.ReadLine();
+                Thread.Sleep(2000);
                 CalculateVelocity(P, globalOpt);
                 MovePopulation(P);
                 Evaluation(P, ref globalOpt);
@@ -130,10 +133,10 @@ namespace ParticleSwarmOptimization
                 for (int j = 0; j < P[i].Position.Length; j++)
                 {
                     P[i].Position[j] += P[i].Velocity[j];
-                    //if (P[i].Position[j] < 0)
-                    //    P[i].Position[j] = 0;
-                    //else if (P[i].Position[j] > 1)
-                    //    P[i].Position[j] = 1;
+                    if (P[i].Position[j] < 0)
+                        P[i].Position[j] = 0;
+                    else if (P[i].Position[j] > 1)
+                        P[i].Position[j] = 1;
                 }
             }
         }

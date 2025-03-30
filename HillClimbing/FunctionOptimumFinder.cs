@@ -4,14 +4,16 @@ namespace HillClimbing
 {
     internal class FunctionOptimumFinder
     {
+        static readonly int X_bias = 0;
+        static readonly int Y_bias = 0;
         static void Main()
         {
-            Console.WriteLine($"Goal to find: [0, 0] {f([0, 0])}");
-            double[] best = [3.0, 3.0];
+            Console.WriteLine($"Goal to find: [{X_bias}, {Y_bias}] {f([X_bias, Y_bias])}");
+            double[] best = [Util.GetDouble(), Util.GetDouble()];
             Console.WriteLine($"Starting [X,Y] is: {double.Round(best[0], 4)}, {double.Round(best[1], 4)} (fitness: {double.Round(f(best), 8)})");
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 1000; i++)
             {
-                double[] curr = HillClimbingSteepestAscent(0.0001);
+                double[] curr = HillClimbingSteepestAscent(0.001);
                 if (f(curr) <= f(best))
                 {
                     best = curr;
@@ -23,7 +25,7 @@ namespace HillClimbing
 
         private static double f(double[] point)
         {
-            return 0.02 * (Math.Pow(point[0], 2) + Math.Pow(point[1], 2)) + -0.2 * Math.Cos(point[0]) + -0.2 * Math.Cos(point[1]);
+            return 0.01 * (Math.Pow(point[0] - X_bias, 2) + Math.Pow(point[1] - Y_bias, 2)) + -0.3 * Math.Cos(point[0]) + -0.4 * Math.Cos(point[1]);
         }
 
         private static double[] HillClimbingSteepestAscent(double epsilon)
