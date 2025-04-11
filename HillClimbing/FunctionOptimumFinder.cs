@@ -6,26 +6,37 @@ namespace HillClimbing
     {
         static readonly int X_bias = 0;
         static readonly int Y_bias = 0;
+        static readonly double A = 0.01;
+        static readonly double B = -0.3;
+        static readonly double C = -0.4;
         static void Main()
         {
-            Console.WriteLine($"Goal to find: [{X_bias}, {Y_bias}] {f([X_bias, Y_bias])}");
+            Console.WriteLine($"Goal to find: [{X_bias}, {Y_bias}] (fitness: {double.Round(f([X_bias, Y_bias]), 10)})");
+
+            double[] best = HillClimbingSteepestAscentRetry(tryCount: 1000, epsilon: 0.0001);
+
+            Console.WriteLine($"Absolute best [X,Y] is: {double.Round(best[0], 4)}, {double.Round(best[1], 4)} (fitness: {double.Round(f(best), 10)})");
+        }
+
+        private static double[] HillClimbingSteepestAscentRetry(int tryCount, double epsilon)
+        {
             double[] best = [Util.GetDouble(), Util.GetDouble()];
-            Console.WriteLine($"Starting [X,Y] is: {double.Round(best[0], 4)}, {double.Round(best[1], 4)} (fitness: {double.Round(f(best), 8)})");
-            for (int i = 0; i < 1000; i++)
+            Console.WriteLine($"Starting [X,Y] is: {double.Round(best[0], 4)}, {double.Round(best[1], 4)} (fitness: {double.Round(f(best), 10)})");
+            for (int i = 0; i < tryCount; i++)
             {
-                double[] curr = HillClimbingSteepestAscent(0.001);
+                double[] curr = HillClimbingSteepestAscent(epsilon);
                 if (f(curr) <= f(best))
                 {
                     best = curr;
-                    Console.WriteLine($"Better [X,Y] is: {double.Round(best[0], 4)}, {double.Round(best[1], 4)} (fitness: {double.Round(f(best), 8)})");
+                    Console.WriteLine($"Better [X,Y] is: {double.Round(best[0], 4)}, {double.Round(best[1], 4)} (fitness: {double.Round(f(best), 10)})");
                 }
             }
-            Console.WriteLine($"Absolute best [X,Y] is: {double.Round(best[0], 4)}, {double.Round(best[1], 4)} (fitness: {double.Round(f(best), 8)})");
+            return best;
         }
 
         private static double f(double[] point)
         {
-            return 0.01 * (Math.Pow(point[0] - X_bias, 2) + Math.Pow(point[1] - Y_bias, 2)) + -0.3 * Math.Cos(point[0]) + -0.4 * Math.Cos(point[1]);
+            return (A * (Math.Pow(point[0] - X_bias, 2) + Math.Pow(point[1] - Y_bias, 2)) + B * Math.Cos(point[0]) + C * Math.Cos(point[1])) - (B + C);
         }
 
         private static double[] HillClimbingSteepestAscent(double epsilon)
@@ -53,12 +64,12 @@ namespace HillClimbing
         {
             double[] pos = [0, 0];
 
-            if (Random.Shared.Next() % 2 == 0)
+            if (Util.GetNumber() % 2 == 0)
                 pos[0] = Util.GetDouble();
             else
                 pos[0] = -Util.GetDouble();
 
-            if (Random.Shared.Next() % 2 == 0)
+            if (Util.GetNumber() % 2 == 0)
                 pos[1] = Util.GetDouble();
             else
                 pos[1] = -Util.GetDouble();
@@ -103,5 +114,6 @@ namespace HillClimbing
         static readonly int RANGE = 10;
         static readonly Random RND = new();
         public static double GetDouble() => RND.NextDouble() * RANGE;
+        public static int GetNumber() => RND.Next();
     }
 }

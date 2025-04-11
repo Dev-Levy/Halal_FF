@@ -7,29 +7,28 @@ namespace ParticleSwarmOptimization
 {
     internal class WareHousePlaceFinder
     {
-        static readonly int POPULATION_SIZE = 10;
+        static readonly int POPULATION_SIZE = 20;
         static readonly int NUM_OF_BUILDINGS = 10;
         static readonly double INERTIA_WEIGHT = 0.7;
-        static readonly double ÖNFEJŰSÉG_WEIGHT = 0.1;
-        static readonly double KONVERGÁLÁS_WEIGHT = 0.1;
+        static readonly double ÖNFEJŰSÉG_WEIGHT = 0.5;
+        static readonly double KONVERGÁLÁS_WEIGHT = 0.5;
         static List<double[]> STORES = [];
         static List<double[]> RESIDENTIALS = [];
 
         static void Main()
         {
-            //problem: where to put warehouse
-            //away from residentals, close to stores
-
             STORES = SetCoordinates();
             RESIDENTIALS = SetCoordinates();
 
-            ParticeSwarmOptimization(() => false);
+            double[] bestPlace = ParticeSwarmOptimization(20);
+            Console.WriteLine();
+            Console.WriteLine($"The best place to put the warehouse is: [{Math.Round(bestPlace[0], 4)}, {Math.Round(bestPlace[1], 4)}]");
         }
 
         private static List<double[]> SetCoordinates()
         {
             List<double[]> doubles = [];
-            for (int i = 0; i < NUM_OF_BUILDINGS; i++)
+            for (int i = 0; i < NUM_OF_BUILDINGS / 2; i++)
             {
                 doubles.Add([Random.Shared.NextDouble(), Random.Shared.NextDouble()]);
             }
@@ -40,7 +39,7 @@ namespace ParticleSwarmOptimization
         {
             double ClosestResidental = 1; //we want this to be maximal
             double FurthestStore = 0; //we want this to be minimal
-            foreach (var store in STORES)
+            foreach (double[] store in STORES)
             {
                 double distance = Math.Sqrt(Math.Pow((store[0] - particle[0]), 2) + Math.Pow((store[1] - particle[1]), 2));
                 if (distance > FurthestStore)
@@ -48,7 +47,7 @@ namespace ParticleSwarmOptimization
                     FurthestStore = distance;
                 }
             }
-            foreach (var res in RESIDENTIALS)
+            foreach (double[] res in RESIDENTIALS)
             {
                 double distance = Math.Sqrt(Math.Pow((res[0] - particle[0]), 2) + Math.Pow((res[1] - particle[1]), 2));
                 if (distance < ClosestResidental)
@@ -57,21 +56,22 @@ namespace ParticleSwarmOptimization
                 }
             }
 
-            return ClosestResidental - FurthestStore; //the bigger, the better
+            return ClosestResidental - FurthestStore; //here the bigger, the better
         }
 
-        static double[] ParticeSwarmOptimization(Func<bool> STOPCONDITION)
+        static double[] ParticeSwarmOptimization(int iterCount)
         {
             double[] globalOpt = [0.5, 0.5];
             var P = InitPopulation();
+
             DrawMap(P);
 
             Evaluation(P, ref globalOpt);
-            while (!STOPCONDITION.Invoke())
+            for (int i = 0; i < iterCount; i++)
             {
                 DrawMap(P);
-                //Console.ReadLine();
-                Thread.Sleep(2000);
+                Console.ReadLine();
+                Thread.Sleep(1000);
                 CalculateVelocity(P, globalOpt);
                 MovePopulation(P);
                 Evaluation(P, ref globalOpt);
@@ -92,38 +92,41 @@ namespace ParticleSwarmOptimization
         private static void DrawMap(Entity[] P)
         {
             Console.Clear();
-            int magnify_X = 200;
-            int magnify_Y = 100;
-            foreach (var store in STORES)
+            int magnify_X = 100;
+            int magnify_Y = 50;
+
+            foreach (double[] store in STORES)
             {
                 Console.SetCursorPosition((int)(store[0] * magnify_X), (int)(store[1] * magnify_Y));
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write('S');
-            }
-            foreach (var res in RESIDENTIALS)
+            }//stores
+            foreach (double[] res in RESIDENTIALS)
             {
                 Console.SetCursorPosition((int)(res[0] * magnify_X), (int)(res[1] * magnify_Y));
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write('R');
-            }
-            for (int i = 0; i < magnify_Y; i++)
-            {
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.SetCursorPosition(magnify_X, i);
-                Console.Write('|');
-            }//print side border
-            for (int i = 0; i < magnify_X; i++)
-            {
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.SetCursorPosition(i, magnify_Y);
-                Console.Write('-');
-            }//print bottom border
+            }//residental buildings
+
             for (int i = 0; i < P.Length; i++)
             {
                 Console.SetCursorPosition((int)(P[i].Position[0] * magnify_X), (int)(P[i].Position[1] * magnify_Y));
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(i);
-            }
+            }//particles
+
+            for (int i = 0; i < magnify_Y; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.SetCursorPosition(magnify_X, i);
+                Console.Write('|');
+            }//side border
+            for (int i = 0; i < magnify_X; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.SetCursorPosition(i, magnify_Y);
+                Console.Write('-');
+            }//bottom border
         }
 
         private static void MovePopulation(Entity[] P)
@@ -133,6 +136,8 @@ namespace ParticleSwarmOptimization
                 for (int j = 0; j < P[i].Position.Length; j++)
                 {
                     P[i].Position[j] += P[i].Velocity[j];
+
+                    //can't go outside boundaries
                     if (P[i].Position[j] < 0)
                         P[i].Position[j] = 0;
                     else if (P[i].Position[j] > 1)
