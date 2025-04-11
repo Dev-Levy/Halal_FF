@@ -17,10 +17,9 @@ namespace DBSCAN
             double eps = 100;
             List<HashSet<Point>> clusters = DBSCAN(clicks, minPts, eps);
             Console.WriteLine($"{clusters.Count} clusters found!");
-            foreach (var cluster in clusters)
-            {
-                Console.WriteLine($"Cluster average position:  [{Math.Round(cluster.Average(p => p.X), 4)}, {Math.Round(cluster.Average(p => p.Y), 4)}]");
-            }
+
+            clusters.ForEach(cluster => Console.WriteLine($"Cluster average position:  [{Math.Round(cluster.Average(p => p.X), 4)}, {Math.Round(cluster.Average(p => p.Y), 4)}]"));
+
             DrawIllustration(clusters);
             Console.ReadLine();
         }
